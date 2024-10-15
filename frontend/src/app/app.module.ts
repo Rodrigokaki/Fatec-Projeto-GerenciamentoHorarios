@@ -10,7 +10,7 @@ import { ClassComponent } from './pages/class/class.component';
 import { StudentComponent } from './pages/student/student.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NavbarComponent } from './navbar/navbar.component';
-import { HomeComponent } from './home/home.component';
+import { HomeComponent } from './pages/home/home.component';
 
 @NgModule({
   declarations: [
