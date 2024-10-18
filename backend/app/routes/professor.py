@@ -5,14 +5,22 @@ from app import db
 bp = Blueprint('professor', __name__, url_prefix='/professor')
 
 @bp.route('/', methods=['GET'])
-def get_users():
+def get_professors():
     professors = Professor.query.all()
     return jsonify([professor.to_dict() for professor in professors])
 
 @bp.route('/', methods=['POST'])
-def add_user():
+def add_professor():
     data = request.get_json()
     
-    new_professor = Professor.to_dict(data)
+    new_professor = Professor(
+        cpf=data.get('cpf'),
+        data_admissao=data.get('data_admissao'),
+        nome=data.get('nome'),
+        email_institucional=data.get('email_institucional')
+    )
 
-    return {"response":"Foi"}
+    db.session.add(new_professor)
+    db.session.commit()
+
+    return jsonify(new_professor.to_dict()), 201
