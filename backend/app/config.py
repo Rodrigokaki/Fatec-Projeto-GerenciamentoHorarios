@@ -1,6 +1,3 @@
-import os
-
 class Config:
-    basedir = os.path.abspath(os.path.dirname(__file__))
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, '../../database/database.db')
-    SQLALCHEMY_TRACK_MODIFICATIONS = False  # Para desativar avisos de modificações do SQLAlchemy
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:admin@localhost/teste'
+    SQLALCHEMY_TRACK_MODIFICATIONS = False 
