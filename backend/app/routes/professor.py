@@ -9,6 +9,13 @@ def get_professors():
     professors = Professor.query.all()
     return jsonify([professor.to_dict() for professor in professors])
 
+@bp.route('/<int:id>', methods=['GET'])
+def get_professor_by_id(id):
+    professor = Professor.query.get(id)
+    if professor:
+        return jsonify(professor.to_dict())
+    return jsonify({'message': 'Usuário não encontrado'}), 404
+
 @bp.route('/', methods=['POST'])
 def add_professor():
     data = request.get_json()
