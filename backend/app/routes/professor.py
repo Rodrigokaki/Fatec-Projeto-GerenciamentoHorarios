@@ -41,3 +41,22 @@ def delete_professor_by_id(id):
     db.session.delete(professor)
     db.session.commit()
     return jsonify({'message':'Usuário deletado com sucesso!'}), 204
+
+@bp.route('/<int:id>', methods=['PUT'])
+def update_professor(id):
+    professor = Professor.query.get(id)
+    if professor is None:
+        return jsonify({"message":"Usuário não encontrado"}), 404
+    
+    data = request.get_json()
+
+    if 'cpf' not in data:
+        return jsonify({'error':'O campo "nome" é obrigatório'}), 400
+    
+    professor.cpf = data['cpf']
+    professor.data_admissao = data['data_admissao']
+    professor.nome = data['nome']
+    professor.email_institucional = data['email_institucional']
+
+    db.session.commit()
+    return jsonify(professor.to_dict()), 200
