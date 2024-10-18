@@ -31,3 +31,13 @@ def add_professor():
     db.session.commit()
 
     return jsonify(new_professor.to_dict()), 201
+
+@bp.route('/<int:id>', methods=['DELETE'])
+def delete_professor_by_id(id):
+    professor = Professor.query.get(id)
+    if professor is None:
+        return jsonify({"message":"Usuário não encontrado"}), 404
+    
+    db.session.delete(professor)
+    db.session.commit()
+    return jsonify({'message':'Usuário deletado com sucesso!'}), 204
