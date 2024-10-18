@@ -1,3 +1,8 @@
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
 class Config:
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:admin@localhost/teste'
+    SQLALCHEMY_DATABASE_URI = os.getenv('DBKEY')
     SQLALCHEMY_TRACK_MODIFICATIONS = False 
