@@ -12,7 +12,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { HomeComponent } from './pages/home/home.component';
 import { CourseComponent } from './pages/course/course.component';
-import { RegisterFormComponent } from './components/register-form/register-form.component';
 import { ClassRegisterComponent } from './pages/class/class-register/class-register.component';
 import { CourseRegisterComponent } from './pages/course/course-register/course-register.component';
 import { LessonRegisterComponent } from './pages/lesson/lesson-register/lesson-register.component';
@@ -31,7 +30,6 @@ import { TeacherRegisterComponent } from './pages/teacher/teacher-register/teach
     NavbarComponent,
     HomeComponent,
     CourseComponent,
-    RegisterFormComponent,
     ClassRegisterComponent,
     CourseRegisterComponent,
     LessonRegisterComponent,
