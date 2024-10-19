@@ -9,7 +9,7 @@ import { LessonComponent } from './pages/lesson/lesson.component';
 import { ClassComponent } from './pages/class/class.component';
 import { StudentComponent } from './pages/student/student.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { NavbarComponent } from './components/navbar/navbar.component';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { HomeComponent } from './pages/home/home.component';
 import { CourseComponent } from './pages/course/course.component';
 import { ClassRegisterComponent } from './pages/class/class-register/class-register.component';
@@ -18,6 +18,7 @@ import { LessonRegisterComponent } from './pages/lesson/lesson-register/lesson-r
 import { StudentRegisterComponent } from './pages/student/student-register/student-register.component';
 import { SubjectRegisterComponent } from './pages/subject/subject-register/subject-register.component';
 import { TeacherRegisterComponent } from './pages/teacher/teacher-register/teacher-register.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,7 @@ import { TeacherRegisterComponent } from './pages/teacher/teacher-register/teach
     LessonComponent,
     ClassComponent,
     StudentComponent,
-    NavbarComponent,
+    SidebarComponent,
     HomeComponent,
     CourseComponent,
     ClassRegisterComponent,
@@ -35,7 +36,8 @@ import { TeacherRegisterComponent } from './pages/teacher/teacher-register/teach
     LessonRegisterComponent,
     StudentRegisterComponent,
     SubjectRegisterComponent,
-    TeacherRegisterComponent
+    TeacherRegisterComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,

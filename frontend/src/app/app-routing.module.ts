@@ -14,20 +14,20 @@ import { StudentRegisterComponent } from './pages/student/student-register/stude
 import { LessonRegisterComponent } from './pages/lesson/lesson-register/lesson-register.component';
 import { ClassRegisterComponent } from './pages/class/class-register/class-register.component';
 
-const routes: Routes = [
+export const routes: Routes = [
   {path: '', component: HomeComponent},
-  {path: 'class', component: ClassComponent},
-  {path: 'class/register', component: ClassRegisterComponent},
-  {path: 'lesson', component: LessonComponent},
-  {path: 'lesson/register', component: LessonRegisterComponent},
-  {path: 'student', component: StudentComponent},
-  {path: 'student/register', component: StudentRegisterComponent},
-  {path: 'subject', component: SubjectComponent},
-  {path: 'subject/register', component: SubjectRegisterComponent},
-  {path: 'teacher', component: TeacherComponent},
-  {path: 'teacher/register', component: TeacherRegisterComponent},
-  {path: 'course', component: CourseComponent},
-  {path: 'course/register', component: CourseRegisterComponent}
+  {path: 'class', component: ClassComponent, data: {title: "Turmas"}},
+  {path: 'class/register', component: ClassRegisterComponent, data: {title: "Registrar turma"}},
+  {path: 'lesson', component: LessonComponent, data: {title: "Aulas"}},
+  {path: 'lesson/register', component: LessonRegisterComponent, data: {title: "Registrar aula"}},
+  {path: 'student', component: StudentComponent, data: {title: "Alunos"}},
+  {path: 'student/register', component: StudentRegisterComponent, data: {title: "Cadastrar aluno"}},
+  {path: 'subject', component: SubjectComponent, data: {title: "Disciplinas"}},
+  {path: 'subject/register', component: SubjectRegisterComponent, data: {title: "Cadastrar disciplina"}},
+  {path: 'teacher', component: TeacherComponent, data: {title: "Professores"}},
+  {path: 'teacher/register', component: TeacherRegisterComponent, data: {title: "Cadastrar professor"}},
+  {path: 'course', component: CourseComponent, data: {title: "Cursos"}},
+  {path: 'course/register', component: CourseRegisterComponent, data: {title: "Cadastrar curso"}}
 ];
 
 @NgModule({
