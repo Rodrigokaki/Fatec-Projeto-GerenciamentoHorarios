@@ -47,9 +47,6 @@ def update_course(id):
         return jsonify({"message":"Não encontrado"}), 404
     
     data = request.get_json()
-
-    if 'cpf' not in data:
-        return jsonify({'error':'O campo "nome" é obrigatório'}), 400
     
     course.nome = data['nome']
     course.eixo_tecnologico = data['eixo_tecnologico']
