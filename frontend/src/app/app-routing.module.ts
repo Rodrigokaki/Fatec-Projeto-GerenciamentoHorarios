@@ -17,17 +17,17 @@ import { ClassRegisterComponent } from './pages/class/class-register/class-regis
 export const routes: Routes = [
   {path: '', component: HomeComponent},
   {path: 'class', component: ClassComponent, data: {title: "Turmas"}},
-  {path: 'class/register', component: ClassRegisterComponent, data: {title: "Registrar turma"}},
+  {path: 'class/register', component: ClassRegisterComponent, data: {title: "Cadastrar turma", isEditing: false}},
   {path: 'lesson', component: LessonComponent, data: {title: "Aulas"}},
-  {path: 'lesson/register', component: LessonRegisterComponent, data: {title: "Registrar aula"}},
+  {path: 'lesson/register', component: LessonRegisterComponent, data: {title: "Cadastrar aula", isEditing: false}},
   {path: 'student', component: StudentComponent, data: {title: "Alunos"}},
-  {path: 'student/register', component: StudentRegisterComponent, data: {title: "Cadastrar aluno"}},
+  {path: 'student/register', component: StudentRegisterComponent, data: {title: "Cadastrar aluno", isEditing: false}},
   {path: 'subject', component: SubjectComponent, data: {title: "Disciplinas"}},
-  {path: 'subject/register', component: SubjectRegisterComponent, data: {title: "Cadastrar disciplina"}},
+  {path: 'subject/register', component: SubjectRegisterComponent, data: {title: "Cadastrar disciplina", isEditing: false}},
   {path: 'teacher', component: TeacherComponent, data: {title: "Professores"}},
-  {path: 'teacher/register', component: TeacherRegisterComponent, data: {title: "Cadastrar professor"}},
+  {path: 'teacher/register', component: TeacherRegisterComponent, data: {title: "Cadastrar professor", isEditing: false}},
   {path: 'course', component: CourseComponent, data: {title: "Cursos"}},
-  {path: 'course/register', component: CourseRegisterComponent, data: {title: "Cadastrar curso"}}
+  {path: 'course/register', component: CourseRegisterComponent, data: {title: "Cadastrar curso", isEditing: false}}
 ];
 
 @NgModule({
