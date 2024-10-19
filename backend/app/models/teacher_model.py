@@ -1,6 +1,6 @@
 from app.db import db
 
-class Professor(db.Model):
+class Teacher(db.Model):
     __tablename__ = 'Professor'
     cod_prof = db.Column(db.Integer, primary_key=True)
     cpf = db.Column(db.Text)
