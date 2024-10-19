@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify, request
 from ..models.subject_model import Subject
 from app.db import db
 
-bp = Blueprint('subject', __name__, url_prefix='/subject')
+bp = Blueprint('subjects', __name__, url_prefix='/subjects')
 
 @bp.route('/', methods=['GET'])
 def get_subjects():
