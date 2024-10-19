@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify, request
 from ..models.class_model import Class
 from app.db import db
 
-bp = Blueprint('class', __name__, url_prefix='/class')
+bp = Blueprint('classes', __name__, url_prefix='/classes')
 
 @bp.route('/', methods=['GET'])
 def get_classes():
