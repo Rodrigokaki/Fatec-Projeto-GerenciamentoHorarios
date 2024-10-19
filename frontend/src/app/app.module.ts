@@ -11,6 +11,7 @@ import { StudentComponent } from './pages/register/student/student.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NavbarComponent } from './navbar/navbar.component';
 import { HomeComponent } from './pages/home/home.component';
+import { CourseComponent } from './pages/register/course/course.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { HomeComponent } from './pages/home/home.component';
     ClassComponent,
     StudentComponent,
     NavbarComponent,
-    HomeComponent
+    HomeComponent,
+    CourseComponent
   ],
   imports: [
     BrowserModule,
