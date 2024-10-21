@@ -19,31 +19,31 @@ export class HomeComponent implements OnInit {
   loadRows(): void {
     this.days = [
       {
-        day: 1,
+        day: "Domingo",
         data: []
       },
       {
-        day: 2,
+        day: "Segunda-feira",
         data: []
       },
       {
-        day: 3,
+        day: "Terça-feira",
         data: []
       },
       {
-        day: 4,
+        day: "Quarta-feira",
         data: []
       },
       {
-        day: 5,
+        day: "Quinta-feira",
         data: []
       },
       {
-        day: 6,
+        day: "Sexta-feira",
         data: []
       },
       {
-        day: 7,
+        day: "Sábado",
         data: []
       }
     ];
@@ -51,7 +51,7 @@ export class HomeComponent implements OnInit {
     this.homeService.getView().subscribe({
       next: (data) => {
         for (let row of data) {
-          switch (row.dia_semana) {
+          switch (row.DiaSemana) {
             case "Segunda-feira":
               this.days[1]['data'].push(row);
               break;

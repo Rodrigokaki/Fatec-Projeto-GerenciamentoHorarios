@@ -8,16 +8,18 @@
             <tr>
               <th class="text-center">Aula</th>
               <th class="text-center">Início</th>
-              <th class="text-center">Turma {{  }}</th>
+              <th class="text-center">Turma</th>
+              <th class="text-center">Professor</th>
               <th class="text-center">Término</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let row of day.data">
-              <th class="text-center">{{ row.cod_aula }}</th>
-              <th class="text-center">{{ row.horario_inicio }}</th>
-              <th class="text-center" *ngFor="let classObj of classes">{{ classObj.cod_turma }}</th>
-              <th class="text-center">{{ row.horario_termino }}</th>
+            <tr *ngFor="let row of day.data; index as i">
+              <th class="text-center">{{ i + 1 }}</th>
+              <th class="text-center">{{ row.Inicio }}</th>
+              <th class="text-center">{{ row.Turma }}</th>
+              <th class="text-center">{{ row.Professor }}</th>
+              <th class="text-center">{{ row.Termino }}</th>
             </tr>
           </tbody>
         </table>

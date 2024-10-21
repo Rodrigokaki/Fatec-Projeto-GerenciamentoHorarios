@@ -53,6 +53,7 @@ def update_lesson(id):
     lesson.horario = data['horario']
     lesson.cod_disciplina = data['cod_disciplina']
     lesson.cod_turma = data['cod_turma']
+    lesson.dia_semana = data['dia_semana']
 
     db.session.commit()
     return jsonify(lesson.to_dict()), 200

@@ -47,13 +47,13 @@ CREATE TABLE Curso (
 CREATE VIEW AulasPorDia AS
 SELECT 
     CASE dia_semana 
-        WHEN 1 THEN 'Segunda-feira'
-        WHEN 2 THEN 'Terça-feira'
-        WHEN 3 THEN 'Quarta-feira'
-        WHEN 4 THEN 'Quinta-feira'
-        WHEN 5 THEN 'Sexta-feira'
-        WHEN 6 THEN 'Sábado'
-        WHEN 7 THEN 'Domingo'
+        WHEN 2 THEN 'Segunda-feira'
+        WHEN 3 THEN 'Terça-feira'
+        WHEN 4 THEN 'Quarta-feira'
+        WHEN 5 THEN 'Quinta-feira'
+        WHEN 6 THEN 'Sexta-feira'
+        WHEN 7 THEN 'Sábado'
+        WHEN 1 THEN 'Domingo'
     END AS DiaSemana,
     cod_aula AS Aula,
     horario AS Inicio,
