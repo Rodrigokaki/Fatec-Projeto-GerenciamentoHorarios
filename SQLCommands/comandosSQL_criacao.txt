@@ -49,7 +49,7 @@ SELECT
     P.nome AS nome_professor,
     T.cod_turma,
     A.horario,
-    A.dia_da_semana
+    A.dia_semana
 FROM Aula A
 JOIN Disciplina D ON A.cod_disciplina = D.cod_disciplina
 JOIN Professor P ON D.cod_prof = P.cod_prof
@@ -72,7 +72,7 @@ BEGIN
             JOIN Disciplina D ON A.cod_disciplina = D.cod_disciplina
             WHERE D.cod_prof = NEW.cod_disciplina 
             AND A.horario IN ('07:15:00', '08:05:00')
-            AND A.dia_da_semana = WEEKDAY(dia_seguinte) + 1
+            AND A.dia_semana = WEEKDAY(dia_seguinte) + 1
         ) THEN
             SIGNAL SQLSTATE '45000'
             SET MESSAGE_TEXT = 'O professor não pode ser escalado para a 1ª e 2ª aula do dia seguinte após lecionar na última aula noturna (21:40).';
@@ -88,7 +88,7 @@ BEGIN
             JOIN Disciplina D ON A.cod_disciplina = D.cod_disciplina
             WHERE D.cod_prof = NEW.cod_disciplina
             AND A.horario = '21:40:00'
-            AND A.dia_da_semana = WEEKDAY(dia_seguinte) + 1
+            AND A.dia_semana = WEEKDAY(dia_seguinte) + 1
         ) THEN
             SIGNAL SQLSTATE '45000'
             SET MESSAGE_TEXT = 'O professor não pode ser escalado para a 1ª e 2ª aula do dia após ter lecionado na última aula noturna (21:40).';
