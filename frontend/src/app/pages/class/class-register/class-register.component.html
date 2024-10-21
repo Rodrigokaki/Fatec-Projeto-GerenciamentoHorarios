@@ -1,19 +1,26 @@
 <div class="container mt-5">
-  <form>
+  <h1>Cadastrar Turma</h1>
+  <form class="mt-5" [formGroup]="formGroupClass">
       <div class="mb-3">
         <label class="form-label">Semestre</label>
-        <input type="number" class="form-control" id="semesterInput">
+        <input type="number" class="form-control" id="semesterInput" name="semesterInput" formControlName="semestre">
       </div>
 
       <div class="mb-3">
-        <label class="form-label">Periodo</label>
-        <input type="text" class="form-control" id="periodInput">
+        <label class="form-label">Período</label>
+        <input type="text" class="form-control" id="periodoInput" name="periodoInput" formControlName="periodo">
       </div>
 
       <div class="mb-3">
-          <label class="form-label">Ano</label>
-          <input type="number" class="form-control" id="yearInput">
+        <label class="form-label">Ano</label>
+        <input type="number" class="form-control" id="yearInput" name="yearInput" formControlName="ano">
       </div>
-      <button type="submit" class="btn btn-primary">Salvar</button>
+
+      <div class="mb-3">
+        <label class="form-label">Código do Curso</label>
+        <input type="number" class="form-control" id="courseInput" name="courseInput" formControlName="cod_curso">
+      </div>
+
+      <button type="submit" class="btn btn-primary" (click)="saveClass()">Salvar</button>
   </form>
 </div>

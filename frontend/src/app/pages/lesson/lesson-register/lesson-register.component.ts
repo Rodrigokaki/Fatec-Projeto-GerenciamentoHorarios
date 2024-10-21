@@ -20,7 +20,8 @@ export class LessonRegisterComponent implements OnInit {
       cod_aula: [''],
       horario: [''],
       cod_disciplina: [''],
-      cod_turma: ['']
+      cod_turma: [''],
+      dia_semana: ['']
     })
   }
 
@@ -30,7 +31,13 @@ export class LessonRegisterComponent implements OnInit {
       this.lesson = this.lessonService.getSharedLesson();
 
       if (Object.keys(this.lesson).length > 0) {
-        this.formGroupLesson.patchValue({cod_aula: this.lesson.cod_aula, cod_disciplina: this.lesson.cod_disciplina, cod_turma: this.lesson.cod_turma, horario: this.lesson.horario});
+        this.formGroupLesson.patchValue({
+          cod_aula: this.lesson.cod_aula,
+          cod_disciplina: this.lesson.cod_disciplina,
+          cod_turma: this.lesson.cod_turma,
+          horario: this.lesson.horario,
+          dia_semana: this.lesson.dia_semana
+        });
         this.isEditing = true;
       } else {
         this.formGroupLesson.reset();

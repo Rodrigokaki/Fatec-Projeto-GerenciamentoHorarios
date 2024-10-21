@@ -16,7 +16,7 @@ def get_teacher_by_id(id):
         return jsonify(teacher.to_dict())
     return jsonify({'message': 'Usuário não encontrado'}), 404
 
-@bp.route('/', methods=['POST'])
+@bp.route('', methods=['POST'])
 def add_teacher():
     data = request.get_json()
     

@@ -14,7 +14,12 @@
       <div class="mb-3">
           <label class="form-label">Horario</label>
           <input type="time" class="form-control" id="timeInput" name="timeInput" formControlName="horario">
-        </div>
+      </div>
+
+      <div class="mb-3">
+          <label class="form-label">Dia da semana</label>
+          <input type="number" class="form-control" id="dayInput" name="dayInput" formControlName="dia_semana">
+      </div>
       <button type="submit" class="btn btn-primary" (click)="saveLesson()">Salvar</button>
   </form>
 </div>

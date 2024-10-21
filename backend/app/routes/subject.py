@@ -16,7 +16,7 @@ def get_subject_by_id(id):
         return jsonify(subject.to_dict())
     return jsonify({'message': 'Não encontrado'}), 404
 
-@bp.route('/', methods=['POST'])
+@bp.route('', methods=['POST'])
 def add_subject():
     data = request.get_json()
     

@@ -16,7 +16,7 @@ def get_course_by_id(id):
         return jsonify(course.to_dict())
     return jsonify({'message': 'Não encontrado'}), 404
 
-@bp.route('/', methods=['POST'])
+@bp.route('', methods=['POST'])
 def add_course():
     data = request.get_json()
     

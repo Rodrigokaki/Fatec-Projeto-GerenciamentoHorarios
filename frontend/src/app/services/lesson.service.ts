@@ -8,7 +8,7 @@ import { ILesson } from '../models/ILesson';
 })
 export class LessonService {
 
-  url = "http://127.0.0.1:5000/lesson";
+  url = "http://127.0.0.1:5000/lessons";
 
   private sharedLesson: ILesson = {} as ILesson;
 
