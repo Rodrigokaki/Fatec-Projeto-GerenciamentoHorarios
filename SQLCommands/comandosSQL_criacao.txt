@@ -58,54 +58,59 @@ SELECT
     cod_aula AS Aula,
     horario AS Inicio,
     cod_turma AS Turma,
-    (SELECT nome FROM Professor p INNER JOIN Disciplina d ON d.cod_prof = p.cod_prof WHERE a.cod_disciplina = d.cod_disciplina) AS Professor,
+    (SELECT p.nome FROM Professor p INNER JOIN Disciplina d ON d.cod_prof = p.cod_prof WHERE a.cod_disciplina = d.cod_disciplina) AS Professor,
     ADDTIME(horario, '00:50:00') AS Termino -- Exemplo de cálculo do término da aula com 50 minutos de duração
 FROM Aula a;
 
-
 DELIMITER //
 
-CREATE PROCEDURE VerificarDisponibilidadeProfessor(IN codProfessor INT, IN diaAtual INT)
+CREATE TRIGGER VerificarUltimaAulaNoturna
+BEFORE INSERT ON Aula
+FOR EACH ROW
 BEGIN
-    -- Verificar se o professor lecionou na última aula do dia anterior (22:30)
     DECLARE diaAnterior INT;
-    SET diaAnterior = IF(diaAtual = 1, 7, diaAtual - 1);
+    DECLARE professorUltimaAula INT;
     
-    IF EXISTS (
-        SELECT * FROM Aula a
-        INNER JOIN Disciplina d ON a.cod_disciplina = d.cod_disciplina
-        WHERE d.cod_prof = codProfessor 
-        AND a.dia_semana = diaAnterior
-        AND a.horario = '22:30:00'
-    ) THEN
-        -- Se lecionou na última aula do dia anterior, impedir que lecione nas duas primeiras aulas
-        DELETE FROM Aula WHERE cod_disciplina IN (
-            SELECT cod_disciplina FROM Disciplina WHERE cod_prof = codProfessor
-        ) AND dia_semana = diaAtual AND horario IN ('07:15:00', '08:05:00');
+    -- Calcular o dia anterior
+    SET diaAnterior = IF(NEW.dia_semana = 1, 7, NEW.dia_semana - 1);
+
+    -- Verificar se o professor lecionou na última aula do dia anterior (22:30)
+    SELECT d.cod_prof INTO professorUltimaAula
+    FROM Aula a
+    INNER JOIN Disciplina d ON a.cod_disciplina = d.cod_disciplina
+    WHERE a.dia_semana = diaAnterior AND a.horario = '22:30:00' AND d.cod_prof = (SELECT cod_prof FROM Disciplina WHERE cod_disciplina = NEW.cod_disciplina)
+    LIMIT 1;
+
+    -- Impedir que o professor lecione nas duas primeiras aulas do dia seguinte
+    IF professorUltimaAula IS NOT NULL AND NEW.horario IN ('07:15:00', '08:05:00') THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'O professor lecionou na última aula noturna e não pode ser alocado nas primeiras duas aulas do dia seguinte.';
     END IF;
-    
 END //
 
 DELIMITER ;
 
 DELIMITER //
 
-CREATE PROCEDURE VerificarConflitoProfessor(IN codProfessor INT, IN diaSemana INT, IN horarioAula TIME)
+CREATE TRIGGER VerificarConflitoHorario
+BEFORE INSERT ON Aula
+FOR EACH ROW
 BEGIN
-    -- Verificar se o professor está escalado em mais de uma disciplina no mesmo horário
-    IF (
-        SELECT COUNT(*) 
-        FROM Aula a
-        INNER JOIN Disciplina d ON a.cod_disciplina = d.cod_disciplina
-        WHERE d.cod_prof = codProfessor 
-        AND a.dia_semana = diaSemana 
-        AND a.horario = horarioAula
-    ) > 1 THEN
-        -- Gatilho de alerta
-        SIGNAL SQLSTATE '45000' 
-        SET MESSAGE_TEXT = 'Conflito detectado: o professor está escalado em mais de uma disciplina no mesmo horário.';
-    END IF;
+    DECLARE qtdConflitos INT;
     
+    -- Verificar se o professor está escalado em mais de uma disciplina no mesmo dia e horário
+    SELECT COUNT(*) INTO qtdConflitos
+    FROM Aula a
+    INNER JOIN Disciplina d ON a.cod_disciplina = d.cod_disciplina
+    WHERE d.cod_prof = (SELECT cod_prof FROM Disciplina WHERE cod_disciplina = NEW.cod_disciplina)
+    AND a.dia_semana = NEW.dia_semana
+    AND a.horario = NEW.horario;
+
+    -- Gatilho de alerta em caso de conflito
+    IF qtdConflitos > 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Conflito detectado: o professor já está alocado em outra disciplina no mesmo dia e horário.';
+    END IF;
 END //
 
 DELIMITER ;
