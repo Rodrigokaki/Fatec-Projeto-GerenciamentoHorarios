@@ -1,1 +1,21 @@
-<p>subject-register works!</p>
+<div class="container mt-5">
+  <h1>Cadastrar Disciplina</h1>
+  <form class="mt-5" [formGroup]="formGroupSubject">
+      <div class="mb-3">
+        <label class="form-label">Nome</label>
+        <input type="text" class="form-control" id="nameInput" name="nameInput" formControlName="nome">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Código do Professor</label>
+        <input type="number" class="form-control" id="teacherInput" name="teacherInput" formControlName="cod_prof">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Código do Curso</label>
+        <input type="number" class="form-control" id="courseInput" name="courseInput" formControlName="cod_curso">
+      </div>
+
+      <button type="submit" class="btn btn-primary" (click)="saveSubject()">Salvar</button>
+  </form>
+</div>
