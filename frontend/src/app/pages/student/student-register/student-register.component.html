@@ -1,1 +1,25 @@
-<p>student-register works!</p>
+<div class="container mt-5">
+  <h1>Cadastrar Aluno</h1>
+  <form class="mt-5" [formGroup]="formGroupStudent">
+      <div class="mb-3">
+        <label class="form-label">Nome</label>
+        <input type="number" class="form-control" id="nameInput" name="nameInput" formControlName="nome">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Código da turma</label>
+        <input type="number" class="form-control" id="classInput" name="cod_turma" formControlName="cod_turma">
+      </div>
+
+      <div class="mb-3">
+          <label class="form-label">Data de nascimento</label>
+          <input type="date" class="form-control" id="birthdayInput" name="birthdayInput" formControlName="data_nascimento">
+      </div>
+
+      <div class="mb-3">
+          <label class="form-label">Data da matricula</label>
+          <input type="date" class="form-control" id="registerInput" name="registerInput" formControlName="data_matricula">
+      </div>
+      <button type="submit" class="btn btn-primary" (click)="saveStudent()">Salvar</button>
+  </form>
+</div>
