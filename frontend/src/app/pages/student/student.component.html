@@ -1,0 +1,31 @@
+<div class="container mt-5">
+  <h1>Alunos</h1>
+
+  <table class="table table-striped table-hover mt-5">
+    <thead>
+      <tr>
+        <th class="text-center">Código do Aluno</th>
+        <th class="text-center">Turma</th>
+        <th>Nome</th>
+        <th class="text-center">Data da matrícula</th>
+        <th class="text-center">Data de nascimento</th>
+        <th class="text-center">Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let student of students">
+        <th class="text-center">{{ student.cod_aluno }}</th>
+        <td class="text-center">{{ student.cod_turma }}</td>
+        <td>{{ student.nome }}</td>
+        <td class="text-center">{{ student.data_matricula }}</td>
+        <td class="text-center">{{ student.data_nascimento }}</td>
+        <td>
+          <div class="d-flex justify-content-center gap-2">
+            <button class="btn btn-primary" (click)="updateStudent(student)">Editar</button>
+            <button class="btn btn-danger" (click)="deleteStudent(student)">Excluir</button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,16 @@
+<div class="container mt-5">
+  <h1>Cadastrar Curso</h1>
+  <form class="mt-5" [formGroup]="formGroupCourse">
+      <div class="mb-3">
+        <label class="form-label">Nome</label>
+        <input type="text" class="form-control" id="nameInput" name="nameInput" formControlName="nome">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Eixo Tecnológico</label>
+        <input type="text" class="form-control" id="areaInput" name="areaInput" formControlName="eixo_tecnologico">
+      </div>
+
+      <button type="submit" class="btn btn-primary" (click)="saveCourse()">Salvar</button>
+  </form>
+</div>

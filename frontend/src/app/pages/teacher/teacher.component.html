@@ -1,0 +1,31 @@
+<div class="container mt-5">
+  <h1>Professores</h1>
+
+  <table class="table table-striped table-hover mt-5">
+    <thead>
+      <tr>
+        <th class="text-center">Código do Professor</th>
+        <th>Nome</th>
+        <th class="text-center">CPF</th>
+        <th class="text-center">E-mail institucional</th>
+        <th class="text-center">Data de admissão</th>
+        <th class="text-center">Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let teacher of teachers">
+        <th class="text-center">{{ teacher.cod_prof }}</th>
+        <td>{{ teacher.nome }}</td>
+        <td class="text-center">{{ teacher.cpf }}</td>
+        <td class="text-center">{{ teacher.email_institucional }}</td>
+        <td class="text-center">{{ teacher.data_admissao }}</td>
+        <td>
+          <div class="d-flex justify-content-center gap-2">
+            <button class="btn btn-primary" (click)="updateTeacher(teacher)">Editar</button>
+            <button class="btn btn-danger" (click)="deleteTeacher(teacher)">Excluir</button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -16,14 +16,15 @@ def get_lesson_by_id(id):
         return jsonify(lesson.to_dict())
     return jsonify({'message': 'Não encontrado'}), 404
 
-@bp.route('/', methods=['POST'])
+@bp.route('', methods=['POST'])
 def add_lesson():
     data = request.get_json()
     
     new_lesson = Lesson(
         horario=data.get('horario'),
         cod_disciplina=data.get('cod_disciplina'),
-        cod_turma = data.get('cod_turma')
+        cod_turma = data.get('cod_turma'),
+        dia_semana = data.get('dia_semana')
     )
 
     db.session.add(new_lesson)

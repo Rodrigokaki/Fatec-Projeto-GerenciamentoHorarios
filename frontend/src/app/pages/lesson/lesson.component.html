@@ -1,0 +1,31 @@
+<div class="container mt-5">
+  <h1>Aulas</h1>
+
+  <table class="table table-striped table-hover mt-5">
+    <thead>
+      <tr>
+        <th class="text-center">Código da Aula</th>
+        <th class="text-center">Dia da Semana</th>
+        <th class="text-center">Horário</th>
+        <th>Disciplina</th>
+        <th class="text-center">Turma</th>
+        <th class="text-center">Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let lesson of lessons">
+        <th class="text-center">{{ lesson.cod_aula }}</th>
+        <th class="text-center">{{ lesson.dia_semana }}</th>
+        <td class="text-center">{{ lesson.horario }}</td>
+        <td>{{ lesson.cod_disciplina }}</td>
+        <td class="text-center">{{ lesson.cod_turma }}</td>
+        <td>
+          <div class="d-flex justify-content-center gap-2">
+            <button class="btn btn-primary" (click)="updateLesson(lesson)">Editar</button>
+            <button class="btn btn-danger" (click)="deleteLesson(lesson)">Excluir</button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

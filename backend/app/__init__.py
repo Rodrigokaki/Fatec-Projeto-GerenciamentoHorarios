@@ -1,9 +1,14 @@
-from flask import Flask
+from flask import Flask, request, jsonify
+from flask_cors import CORS
 from .routes import teacher, subject, course, lesson, class1, student
 from .db import db
 
+
 def create_app():
     app = Flask(__name__)
+    
+    # Enable CORS for all routes
+    CORS(app)
     
     # Configurações
     app.config.from_object('app.config.Config')

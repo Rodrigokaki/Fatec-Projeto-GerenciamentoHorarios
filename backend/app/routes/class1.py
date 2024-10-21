@@ -16,7 +16,7 @@ def get_class_by_id(id):
         return jsonify(class1.to_dict())
     return jsonify({'message': 'Não encontrado'}), 404
 
-@bp.route('/', methods=['POST'])
+@bp.route('', methods=['POST'])
 def add_class():
     data = request.get_json()
     

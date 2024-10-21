@@ -1,0 +1,25 @@
+<div class="container mt-5">
+  <h1>Cadastrar Aula</h1>
+  <form class="mt-5" [formGroup]="formGroupLesson">
+      <div class="mb-3">
+        <label class="form-label">Código da disciplina</label>
+        <input type="number" class="form-control" id="subjectInput" name="subjectInput" formControlName="cod_disciplina">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Código da turma</label>
+        <input type="number" class="form-control" id="classInput" name="cod_turma" formControlName="cod_turma">
+      </div>
+
+      <div class="mb-3">
+          <label class="form-label">Horario</label>
+          <input type="time" class="form-control" id="timeInput" name="timeInput" formControlName="horario">
+      </div>
+
+      <div class="mb-3">
+          <label class="form-label">Dia da semana</label>
+          <input type="number" class="form-control" id="dayInput" name="dayInput" formControlName="dia_semana">
+      </div>
+      <button type="submit" class="btn btn-primary" (click)="saveLesson()">Salvar</button>
+  </form>
+</div>
