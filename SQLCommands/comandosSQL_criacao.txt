@@ -1,0 +1,120 @@
+CREATE TABLE Disciplina (
+    cod_disciplina int PRIMARY KEY AUTO_INCREMENT,
+    nome varchar(50),
+    cod_prof int REFERENCES Professor (cod_prof),
+	cod_curso int REFERENCES Curso (cod_curso)
+);
+
+CREATE TABLE Professor (
+	cod_prof int PRIMARY KEY AUTO_INCREMENT,
+    cpf varchar(15),
+    data_admissao date,
+    nome varchar(50),
+    email_institucional varchar(50)
+);
+
+CREATE TABLE Aula (
+	cod_aula int PRIMARY KEY AUTO_INCREMENT,
+    horario time,
+    cod_disciplina int REFERENCES Disciplina (cod_disciplina),
+    cod_turma int REFERENCES Turma (cod_turma),
+    dia_semana int
+    
+);
+
+CREATE TABLE Turma (
+	cod_turma int PRIMARY KEY AUTO_INCREMENT,
+    semestre smallint(2),
+    periodo varchar(6),
+    ano smallint(4),
+	cod_curso int REFERENCES Curso (cod_curso)
+);
+
+CREATE TABLE Aluno (
+	cod_aluno int PRIMARY KEY AUTO_INCREMENT,
+    cod_turma int REFERENCES Turma (cod_turma),
+    nome varchar(50),
+    data_matricula date,
+    data_nascimento date
+);
+
+CREATE TABLE Curso (
+	cod_curso int PRIMARY KEY AUTO_INCREMENT,
+	nome varchar(50),
+	eixo_tecnologico varchar(50)
+);
+
+CREATE VIEW ProfessoresPorHorario AS
+SELECT 
+    P.nome AS nome_professor,
+    T.cod_turma,
+    A.horario,
+    A.dia_da_semana
+FROM Aula A
+JOIN Disciplina D ON A.cod_disciplina = D.cod_disciplina
+JOIN Professor P ON D.cod_prof = P.cod_prof
+JOIN Turma T ON A.cod_turma = T.cod_turma;
+
+DELIMITER //
+
+CREATE TRIGGER verificaHorarioProfessor
+BEFORE INSERT ON Aula
+FOR EACH ROW
+BEGIN
+    DECLARE dia_seguinte DATE;
+    
+    IF NEW.horario = '21:40:00' THEN
+        SET dia_seguinte = CURDATE() + INTERVAL 1 DAY;
+        
+        IF EXISTS (
+            SELECT 1 
+            FROM Aula A
+            JOIN Disciplina D ON A.cod_disciplina = D.cod_disciplina
+            WHERE D.cod_prof = NEW.cod_disciplina 
+            AND A.horario IN ('07:15:00', '08:05:00')
+            AND A.dia_da_semana = WEEKDAY(dia_seguinte) + 1
+        ) THEN
+            SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'O professor não pode ser escalado para a 1ª e 2ª aula do dia seguinte após lecionar na última aula noturna (21:40).';
+        END IF;
+    END IF;
+    
+    IF NEW.horario IN ('07:15:00', '08:05:00') THEN
+        SET dia_seguinte = CURDATE() - INTERVAL 1 DAY;
+        
+        IF EXISTS (
+            SELECT 1 
+            FROM Aula A
+            JOIN Disciplina D ON A.cod_disciplina = D.cod_disciplina
+            WHERE D.cod_prof = NEW.cod_disciplina
+            AND A.horario = '21:40:00'
+            AND A.dia_da_semana = WEEKDAY(dia_seguinte) + 1
+        ) THEN
+            SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'O professor não pode ser escalado para a 1ª e 2ª aula do dia após ter lecionado na última aula noturna (21:40).';
+        END IF;
+    END IF;
+END//
+
+DELIMITER ;
+
+DELIMITER //
+
+CREATE TRIGGER verificaConflitoDeHorario
+BEFORE INSERT ON Aula
+FOR EACH ROW
+BEGIN
+    IF EXISTS (
+        SELECT 1
+        FROM Aula A
+        JOIN Disciplina D ON A.cod_disciplina = D.cod_disciplina
+        WHERE D.cod_prof = (SELECT cod_prof FROM Disciplina WHERE cod_disciplina = NEW.cod_disciplina)
+        AND A.horario = NEW.horario
+        AND A.dia_da_semana = NEW.dia_da_semana
+    ) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Conflito de horário: o professor já tem uma aula no mesmo horário e dia.';
+    END IF;
+END//
+
+DELIMITER ;
