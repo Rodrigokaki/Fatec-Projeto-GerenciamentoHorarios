@@ -1,1 +1,26 @@
-<p>home works!</p>
+<div class="container mt-5">
+    <h1>Início</h1>
+  
+    <div *ngFor="let day of days">
+        <h3>{{ day.day }}</h3>
+        <table class="table table-striped table-hover mt-5">
+          <thead>
+            <tr>
+              <th class="text-center">Aula</th>
+              <th class="text-center">Início</th>
+              <th class="text-center">Turma {{  }}</th>
+              <th class="text-center">Término</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of day.data">
+              <th class="text-center">{{ row.cod_aula }}</th>
+              <th class="text-center">{{ row.horario_inicio }}</th>
+              <th class="text-center" *ngFor="let classObj of classes">{{ classObj.cod_turma }}</th>
+              <th class="text-center">{{ row.horario_termino }}</th>
+            </tr>
+          </tbody>
+        </table>
+    </div>
+  </div>
+  
