@@ -23,7 +23,8 @@ def add_lesson():
     new_lesson = Lesson(
         horario=data.get('horario'),
         cod_disciplina=data.get('cod_disciplina'),
-        cod_turma = data.get('cod_turma')
+        cod_turma = data.get('cod_turma'),
+        dia_semana = data.get('dia_semana')
     )
 
     db.session.add(new_lesson)

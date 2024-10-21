@@ -6,6 +6,7 @@ class Lesson(db.Model):
     horario = db.Column(db.Time)
     cod_disciplina = db.Column(db.Integer, db.ForeignKey('Disciplina.cod_disciplina'))
     cod_turma = db.Column(db.Integer, db.ForeignKey('Turma.cod_turma'))
+    dia_semana = db.Column(db.Integer)
 
     # Método para converter uma instância para dicionário
     def to_dict(self):
@@ -13,5 +14,6 @@ class Lesson(db.Model):
             'cod_aula': self.cod_aula,
             'horario': self.horario.strftime('%H:%M') if self.horario else None,
             'cod_disciplina': self.cod_disciplina,
-            'cod_turma': self.cod_turma
+            'cod_turma': self.cod_turma,
+            'dia_semana': self.dia_semana
         }
