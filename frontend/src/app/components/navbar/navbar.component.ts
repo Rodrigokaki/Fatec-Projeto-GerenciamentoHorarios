@@ -21,7 +21,6 @@ export class NavbarComponent implements OnInit {
       if(routerData instanceof NavigationEnd){
 
         const index = routerData.url.split("/")[1];
-        console.log(index);
 
         for (let route of routes) {
           if (route.path?.split("/")[0] === index && route.path && route.data) {
@@ -31,6 +30,5 @@ export class NavbarComponent implements OnInit {
       }
     })
 
-    console.log(this.relativeRoutes);
   }
 }

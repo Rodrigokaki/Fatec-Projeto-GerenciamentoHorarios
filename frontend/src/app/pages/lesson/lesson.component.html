@@ -5,6 +5,7 @@
     <thead>
       <tr>
         <th class="text-center">Código da Aula</th>
+        <th class="text-center">Dia da Semana</th>
         <th class="text-center">Horário</th>
         <th>Disciplina</th>
         <th class="text-center">Turma</th>
@@ -14,6 +15,7 @@
     <tbody>
       <tr *ngFor="let lesson of lessons">
         <th class="text-center">{{ lesson.cod_aula }}</th>
+        <th class="text-center">{{ lesson.dia_semana }}</th>
         <td class="text-center">{{ lesson.horario }}</td>
         <td>{{ lesson.cod_disciplina }}</td>
         <td class="text-center">{{ lesson.cod_turma }}</td>

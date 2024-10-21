@@ -3,4 +3,5 @@ export interface ILesson {
   horario: string
   cod_disciplina: number
   cod_turma: number
+  dia_semana: number
 }
