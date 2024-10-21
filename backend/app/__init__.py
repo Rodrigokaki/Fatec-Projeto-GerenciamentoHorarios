@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from .routes import teacher, subject, course, lesson, class1, student
+from .routes import teacher, subject, course, lesson, class1, student, home
 from .db import db
 
 
@@ -23,5 +23,6 @@ def create_app():
     app.register_blueprint(lesson.bp)
     app.register_blueprint(class1.bp)
     app.register_blueprint(student.bp)
+    app.register_blueprint(home.bp)
 
     return app
