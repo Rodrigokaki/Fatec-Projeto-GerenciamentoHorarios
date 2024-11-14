@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify
 from app.db import mongo
 from ..helpers import jsonify_plain
+from datetime import datetime
 
 
 bp = Blueprint('aulaspordia', __name__, url_prefix='/home')
@@ -82,6 +83,12 @@ def get_homes():
     ]
     
     result = list(mongo.db.Aula.aggregate(pipeline))
+
+    for i in result:
+        if isinstance(i.get("Inicio"), datetime):
+            i["Inicio"] = i["Inicio"].strftime("%H:%M:%S")
+        if isinstance(i.get("Termino"), datetime):
+            i["Termino"] = i["Termino"].strftime("%H:%M:%S")
     
     response = []
     
