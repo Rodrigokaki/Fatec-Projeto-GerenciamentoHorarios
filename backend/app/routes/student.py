@@ -1,10 +1,8 @@
 from flask import Blueprint, jsonify, request
-from ..models.student_model import Student
 from app.db import mongo
 from ..helpers import jsonify_plain, convert_to_datetime
 from bson import ObjectId
 from bson.errors import InvalidId as bsonInvalidId
-from datetime import datetime
 import traceback
 
 bp = Blueprint('students', __name__, url_prefix='/students')
