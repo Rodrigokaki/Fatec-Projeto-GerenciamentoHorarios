@@ -1,59 +1,88 @@
 from flask import Blueprint, jsonify, request
-from ..models.student_model import Student
-from app.db import db
+from app.db import mongo
+from ..helpers import jsonify_plain, convert_to_datetime
+from bson import ObjectId
+from bson.errors import InvalidId as bsonInvalidId
+import traceback
 
 bp = Blueprint('students', __name__, url_prefix='/students')
+PRIMARY_ID_KEY = 'cod_aluno'
 
 @bp.route('/', methods=['GET'])
 def get_students():
-    students = Student.query.all()
-    return jsonify([student.to_dict() for student in students])
+    students = mongo.db.Aluno.find()
+    students_list = [jsonify_plain(student, id_key=PRIMARY_ID_KEY) for student in students]
+    
+    return jsonify(students_list)
 
-@bp.route('/<int:id>', methods=['GET'])
+@bp.route('/<id>', methods=['GET'])
 def get_student_by_id(id):
-    student = Student.query.get(id)
+    try:
+        student = mongo.db.Aluno.find_one({"_id": ObjectId(id)})
+    except bsonInvalidId as invalidId:
+        return jsonify({'message': 'ID inválido', 'error': traceback.format_exception_only(invalidId)}), 400
+    
     if student:
-        return jsonify(student.to_dict())
+            student = jsonify_plain(student, id_key=PRIMARY_ID_KEY)
+            return jsonify(student)
+    
     return jsonify({'message': 'Não encontrado'}), 404
 
 @bp.route('', methods=['POST'])
 def add_student():
     data = request.get_json()
     
-    new_student = Student(
-        nome=data.get('nome'),
-        data_matricula=data.get('data_matricula'),
-        data_nascimento=data.get('data_nascimento'),
-        cod_turma=data.get('cod_turma')
-    )
+    try:
+        new_student = {
+            'nome': data.get('nome'),
+            'data_matricula': convert_to_datetime(data.get('data_matricula')),
+            'data_nascimento': convert_to_datetime(data.get('data_nascimento')),
+            'cod_turma': ObjectId(data.get('cod_turma'))
+        }
+    except bsonInvalidId as invalidId:
+        return jsonify({'message': 'ID inválido', 'error': traceback.format_exception_only(invalidId)}), 400
+    except ValueError as ve:
+        return jsonify({'message': 'Os dados estão em um formato inválido', 'error': traceback.format_exception_only(ve)}), 400
 
-    db.session.add(new_student)
-    db.session.commit()
+    mongo.db.Aluno.insert_one(new_student)
 
-    return jsonify(new_student.to_dict()), 201
+    return jsonify(jsonify_plain(new_student, id_key=PRIMARY_ID_KEY)), 201
 
-@bp.route('/<int:id>', methods=['DELETE'])
+@bp.route('/<id>', methods=['DELETE'])
 def delete_student_by_id(id):
-    student = Student.query.get(id)
-    if student is None:
-        return jsonify({"message":"Não encontrado"}), 404
+    try:
+        result = mongo.db.Aluno.delete_one({"_id": ObjectId(id)})
+    except bsonInvalidId as invalidId:
+        return jsonify({'message': 'ID inválido', 'error': traceback.format_exception_only(invalidId)}), 400
     
-    db.session.delete(student)
-    db.session.commit()
+    if result.deleted_count == 0:
+        return jsonify({"message":"Não encontrado"}), 404
     return jsonify({'message':'Deletado com sucesso!'}), 204
 
-@bp.route('/<int:id>', methods=['PUT'])
+@bp.route('/<id>', methods=['PUT'])
 def update_student(id):
-    student = Student.query.get(id)
-    if student is None:
-        return jsonify({"message":"Não encontrado"}), 404
-    
     data = request.get_json()
     
-    student.nome = data['nome']
-    student.data_matricula = data['data_matricula']
-    student.data_nascimento = data['data_nascimento']
-    student.cod_turma = data['cod_turma']
+    try:
+        updated_student = {
+            'nome': data['nome'],
+            'data_matricula': convert_to_datetime(data['data_matricula']),
+            'data_nascimento': convert_to_datetime(data['data_nascimento']),
+            'cod_turma': ObjectId(data['cod_turma'])
+        }
+    except bsonInvalidId as invalidId:
+        return jsonify({'message': 'ID inválido', 'error': traceback.format_exception_only(invalidId)}), 400
+    except ValueError as ve:
+        return jsonify({'message': 'Os dados estão em um formato inválido', 'error': traceback.format_exception_only(ve)}), 400
+    
+    try:
+        result = mongo.db.Aluno.update_one({"_id": ObjectId(id)}, {"$set": updated_student})
+    except bsonInvalidId as invalidId:
+        return jsonify({'message': 'ID inválido', 'error': traceback.format_exception_only(invalidId)}), 400
 
-    db.session.commit()
-    return jsonify(student.to_dict()), 200
+    if result.matched_count == 0:
+        return jsonify({'message': 'Não encontrado'}), 404
+    
+    updated_student['cod_aluno'] = id
+
+    return jsonify(jsonify_plain(updated_student, id_key=PRIMARY_ID_KEY)), 200

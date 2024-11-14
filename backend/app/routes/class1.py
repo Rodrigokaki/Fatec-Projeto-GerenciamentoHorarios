@@ -1,59 +1,88 @@
 from flask import Blueprint, jsonify, request
-from ..models.class_model import Class
-from app.db import db
+from app.db import mongo
+from ..helpers import jsonify_plain, convert_to_datetime
+from bson import ObjectId
+from bson.errors import InvalidId as bsonInvalidId
+import traceback
 
 bp = Blueprint('classes', __name__, url_prefix='/classes')
+PRIMARY_ID_KEY = 'cod_turma'
 
 @bp.route('/', methods=['GET'])
 def get_classes():
-    classes = Class.query.all()
-    return jsonify([class1.to_dict() for class1 in classes])
+    classes = mongo.db.Turma.find()
+    classes_list = [jsonify_plain(class1, id_key=PRIMARY_ID_KEY) for class1 in classes]
+    
+    return jsonify(classes_list)
 
-@bp.route('/<int:id>', methods=['GET'])
+@bp.route('/<id>', methods=['GET'])
 def get_class_by_id(id):
-    class1 = Class.query.get(id)
+    try:
+        class1 = mongo.db.Turma.find_one({"_id": ObjectId(id)})
+    except bsonInvalidId as invalidId:
+        return jsonify({'message': 'ID inválido', 'error': traceback.format_exception_only(invalidId)}), 400
+    
     if class1:
-        return jsonify(class1.to_dict())
+            class1 = jsonify_plain(class1, id_key=PRIMARY_ID_KEY)
+            return jsonify(class1)
+    
     return jsonify({'message': 'Não encontrado'}), 404
 
 @bp.route('', methods=['POST'])
 def add_class():
     data = request.get_json()
     
-    new_class = Class(
-        semestre=data.get('semestre'),
-        periodo=data.get('periodo'),
-        ano=data.get('ano'),
-        cod_curso=data.get('cod_curso')
-    )
+    try:
+        new_class = {
+            'ano': data.get('ano'),
+            'periodo': data.get('periodo'),
+            'semestre': data.get('semestre'),
+            'cod_curso': ObjectId(data.get('cod_curso'))
+        }
+    except bsonInvalidId as invalidId:
+        return jsonify({'message': 'ID inválido', 'error': traceback.format_exception_only(invalidId)}), 400
+    except ValueError as ve:
+        return jsonify({'message': 'Os dados estão em um formato inválido', 'error': traceback.format_exception_only(ve)}), 400
 
-    db.session.add(new_class)
-    db.session.commit()
+    mongo.db.Turma.insert_one(new_class)
 
-    return jsonify(new_class.to_dict()), 201
+    return jsonify(jsonify_plain(new_class, id_key=PRIMARY_ID_KEY)), 201
 
-@bp.route('/<int:id>', methods=['DELETE'])
+@bp.route('/<id>', methods=['DELETE'])
 def delete_class_by_id(id):
-    class1 = Class.query.get(id)
-    if class1 is None:
-        return jsonify({"message":"Não encontrado"}), 404
+    try:
+        result = mongo.db.Turma.delete_one({"_id": ObjectId(id)})
+    except bsonInvalidId as invalidId:
+        return jsonify({'message': 'ID inválido', 'error': traceback.format_exception_only(invalidId)}), 400
     
-    db.session.delete(class1)
-    db.session.commit()
+    if result.deleted_count == 0:
+        return jsonify({"message":"Não encontrado"}), 404
     return jsonify({'message':'Deletado com sucesso!'}), 204
 
-@bp.route('/<int:id>', methods=['PUT'])
+@bp.route('/<id>', methods=['PUT'])
 def update_class(id):
-    class1 = Class.query.get(id)
-    if class1 is None:
-        return jsonify({"message":"Não encontrado"}), 404
-    
     data = request.get_json()
     
-    class1.semestre = data['semestre']
-    class1.periodo = data['periodo']
-    class1.ano = data['ano']
-    class1.cod_curso = data['curso']
+    try:
+        updated_class = {
+            'ano': data.get('ano'),
+            'periodo': data.get('periodo'),
+            'semestre': data.get('semestre'),
+            'cod_curso': ObjectId(data.get('cod_curso'))
+        }
+    except bsonInvalidId as invalidId:
+        return jsonify({'message': 'ID inválido', 'error': traceback.format_exception_only(invalidId)}), 400
+    except ValueError as ve:
+        return jsonify({'message': 'Os dados estão em um formato inválido', 'error': traceback.format_exception_only(ve)}), 400
+    
+    try:
+        result = mongo.db.Turma.update_one({"_id": ObjectId(id)}, {"$set": updated_class})
+    except bsonInvalidId as invalidId:
+        return jsonify({'message': 'ID inválido', 'error': traceback.format_exception_only(invalidId)}), 400
 
-    db.session.commit()
-    return jsonify(class1.to_dict()), 200
+    if result.matched_count == 0:
+        return jsonify({'message': 'Não encontrado'}), 404
+    
+    updated_class['cod_turma'] = id
+
+    return jsonify(jsonify_plain(updated_class, id_key=PRIMARY_ID_KEY)), 200

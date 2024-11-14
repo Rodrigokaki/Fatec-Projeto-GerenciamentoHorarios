@@ -1,7 +1,7 @@
-from flask import Flask, request, jsonify
+from flask import Flask
 from flask_cors import CORS
 from .routes import teacher, subject, course, lesson, class1, student, home
-from .db import db
+from .db import mongo
 
 
 def create_app():
@@ -14,7 +14,7 @@ def create_app():
     app.config.from_object('app.config.Config')
 
     # Inicializar o banco de dados
-    db.init_app(app)
+    mongo.init_app(app)
 
     # Registrar Blueprints (rotas)
     app.register_blueprint(teacher.bp)
