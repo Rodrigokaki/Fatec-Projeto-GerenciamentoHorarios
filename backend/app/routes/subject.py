@@ -35,7 +35,7 @@ def add_subject():
     try:
         new_subject = {
             'nome': data.get('nome'),
-            'cod_professor': ObjectId(data.get('cod_professor')),
+            'cod_prof': ObjectId(data.get('cod_professor')),
             'cod_curso': ObjectId(data.get('cod_curso'))
         }
     except bsonInvalidId as invalidId:

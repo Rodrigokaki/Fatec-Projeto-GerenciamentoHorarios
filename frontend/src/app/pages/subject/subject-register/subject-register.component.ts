@@ -2,6 +2,10 @@ import { Component } from '@angular/core';
 import { ISubject } from '../../../models/ISubject';
 import { SubjectService } from '../../../services/subject.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { ITeacher } from '../../../models/ITeacher';
+import { ICourse } from '../../../models/ICourse';
+import { TeacherService } from '../../../services/teacher.service';
+import { CourseService } from '../../../services/course.service';
 
 @Component({
   selector: 'app-subject-register',
@@ -13,8 +17,12 @@ export class SubjectRegisterComponent {
 
   subject?: ISubject | null;
   formGroupSubject: FormGroup
+  teachers: ITeacher[] = [];
+  courses: ICourse[] = [];
 
-  constructor(private formBuilder: FormBuilder, private subjectService: SubjectService) {
+  constructor(private formBuilder: FormBuilder, private subjectService: SubjectService, private teacherService: TeacherService,
+    private courseService: CourseService
+  ) {
     this.formGroupSubject = formBuilder.group({
       cod_disciplina: [''],
       nome: [''],
@@ -27,6 +35,14 @@ export class SubjectRegisterComponent {
       this.isEditing = false;
 
       this.subject = this.subjectService.getSharedSubject();
+
+      this.teacherService.getTeachers().subscribe(data => {
+        this.teachers = data;
+      })
+
+      this.courseService.getCourses().subscribe(data => {
+        this.courses = data;
+      })
 
       if (Object.keys(this.subject).length > 0) {
         this.formGroupSubject.patchValue({
