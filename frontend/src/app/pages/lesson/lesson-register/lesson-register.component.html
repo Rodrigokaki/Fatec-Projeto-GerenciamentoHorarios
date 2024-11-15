@@ -3,12 +3,18 @@
   <form class="mt-5" [formGroup]="formGroupLesson">
       <div class="mb-3">
         <label class="form-label">Código da disciplina</label>
-        <input type="number" class="form-control" id="subjectInput" name="subjectInput" formControlName="cod_disciplina">
+        <select class="form-select">
+          <option selected>Escolha:</option>
+          <option *ngFor="let subject of subjects" [value]="subject.cod_disciplina">{{ subject.cod_disciplina }}</option>
+        </select>
       </div>
 
       <div class="mb-3">
         <label class="form-label">Código da turma</label>
-        <input type="number" class="form-control" id="classInput" name="cod_turma" formControlName="cod_turma">
+        <select class="form-select">
+          <option selected>Escolha:</option>
+          <option *ngFor="let iclass of classes" [value]="iclass.cod_turma">{{ iclass.cod_turma }}</option>
+        </select>
       </div>
 
       <div class="mb-3">

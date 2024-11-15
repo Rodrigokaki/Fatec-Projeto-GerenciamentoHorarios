@@ -17,7 +17,7 @@
             <tr *ngFor="let row of day.data; index as i">
               <th class="text-center">{{ i + 1 }}</th>
               <th class="text-center">{{ row.Inicio }}</th>
-              <th class="text-center">{{ row.Turma }}</th>
+              <th class="text-center">{{ row.Curso }} - {{ row.Semestre }}° Semestre</th>
               <th class="text-center">{{ row.Professor }}</th>
               <th class="text-center">{{ row.Termino }}</th>
             </tr>
