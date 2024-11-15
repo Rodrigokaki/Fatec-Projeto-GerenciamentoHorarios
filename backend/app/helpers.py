@@ -19,5 +19,10 @@ def jsonify_plain(document, id_key="id"):
 
 def convert_to_datetime(d):
     new_date_obj = datetime.strptime(d, "%H:%M")
+
+    return new_date_obj
+
+def convert_to_datatime_YMD(d):
+    new_date_obj = datetime.strptime(d, "%Y-%m-%d")
     
     return new_date_obj
