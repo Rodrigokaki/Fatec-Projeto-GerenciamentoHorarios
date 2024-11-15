@@ -122,5 +122,8 @@ def get_homes():
     for i in result:
         response.append(jsonify_plain(i))
 
+    mongo.db.AulasPorDia.delete_many({})  # Limpar a coleção antes de inserir novos dados
+    mongo.db.AulasPorDia.insert_many(result)  # Armazena o resultado da view
+
     return jsonify(response), 200
 
