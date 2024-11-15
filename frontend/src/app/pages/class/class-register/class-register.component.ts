@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { IClass } from '../../../models/IClass';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ClassService } from '../../../services/class.service';
+import { IClassName } from '../../../models/IClassName';
+import { ICourse } from '../../../models/ICourse';
+import { CourseService } from '../../../services/course.service';
 
 @Component({
   selector: 'app-class-register',
@@ -13,8 +16,9 @@ export class ClassRegisterComponent {
 
   classObj?: IClass | null;
   formGroupClass: FormGroup
+  courses: ICourse[] = [];
 
-  constructor(private formBuilder: FormBuilder, private classService: ClassService) {
+  constructor(private formBuilder: FormBuilder, private classService: ClassService, private courseService: CourseService) {
     this.formGroupClass = formBuilder.group({
       cod_turma: [''],
       semestre: [''],
@@ -28,6 +32,10 @@ export class ClassRegisterComponent {
       this.isEditing = false;
 
       this.classObj = this.classService.getSharedClass();
+
+      this.courseService.getCourses().subscribe(data => {
+        this.courses = data;
+      })
 
       if (Object.keys(this.classObj).length > 0) {
         this.formGroupClass.patchValue({
