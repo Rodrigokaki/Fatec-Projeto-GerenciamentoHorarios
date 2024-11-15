@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { IClass } from '../models/IClass';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { forkJoin, map, Observable, switchMap } from 'rxjs';
+import { IClassName } from '../models/IClassName';
+import { CourseService } from './course.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +14,7 @@ export class ClassService {
 
   private sharedClass: IClass = {} as IClass;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private courseService: CourseService) { }
 
   getSharedClass(): IClass {
     return this.sharedClass;
@@ -41,4 +43,20 @@ export class ClassService {
   updateClass(classObj: IClass): Observable<IClass> {
     return this.http.put<IClass>(`${this.url}/${classObj.cod_turma}`, classObj);
   }
+
+  getClassesWithName(): Observable<IClassName[]> {
+    return this.getClasses().pipe(
+      map(turmas =>
+        turmas.map(turma => {
+          return this.courseService.getCourseId(turma.cod_curso).pipe(
+            map(curso => ({
+              ...turma,
+              nome_curso: curso.nome,
+            }))
+          );
+        })
+      ),
+      switchMap(observables => forkJoin(observables))
+    );
+  }  
 }

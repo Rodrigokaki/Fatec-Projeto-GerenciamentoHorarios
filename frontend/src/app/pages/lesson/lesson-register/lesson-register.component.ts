@@ -7,6 +7,7 @@ import { ISubject } from '../../../models/ISubject';
 import { SubjectService } from '../../../services/subject.service';
 import { IClass } from '../../../models/IClass';
 import { ClassService } from '../../../services/class.service';
+import { IClassName } from '../../../models/IClassName';
 
 @Component({
   selector: 'app-lesson-register',
@@ -20,6 +21,7 @@ export class LessonRegisterComponent implements OnInit {
   formGroupLesson: FormGroup
   subjects: ISubject[] = [];
   classes: IClass[] = [];
+  classesWithName: IClassName[] = [];
 
   constructor(private formBuilder: FormBuilder, private lessonService: LessonService, private subjectService: SubjectService, 
     private classService: ClassService) {
@@ -39,8 +41,8 @@ export class LessonRegisterComponent implements OnInit {
         this.subjects = data;
       })
 
-      this.classService.getClasses().subscribe(data => {
-        this.classes = data;
+      this.classService.getClassesWithName().subscribe(data => {
+        this.classesWithName = data;
       })
 
       this.lesson = this.lessonService.getSharedLesson();
