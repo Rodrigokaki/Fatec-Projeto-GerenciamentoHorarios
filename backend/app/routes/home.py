@@ -52,12 +52,37 @@ def get_homes():
         {
             "$unwind": "$professor_info"
         },
-        # Adicionar o nome do professor e calcular o término da aula (50 minutos após o início)
+        # Associar com a coleção Turma para obter o semestre da turma e o código do curso
+        {
+            "$lookup": {
+                "from": "Turma",
+                "localField": "cod_turma",
+                "foreignField": "_id",
+                "as": "turma_info"
+            }
+        },
+        {
+            "$unwind": "$turma_info"
+        },
+        # Associar com a coleção Curso para obter o nome do curso
+        {
+            "$lookup": {
+                "from": "Curso",
+                "localField": "turma_info.cod_curso",
+                "foreignField": "_id",
+                "as": "curso_info"
+            }
+        },
+        {
+            "$unwind": "$curso_info"
+        },
+        # Adicionar o nome do professor, nome da turma e nome do curso, e calcular o término da aula
         {
             "$addFields": {
                 "Aula": "$cod_aula",
                 "Inicio": "$horario",
-                "Turma": "$cod_turma",
+                "Semestre": "$turma_info.semestre",  # Semestre da turma
+                "Curso": "$curso_info.nome",        # Nome do curso
                 "Professor": "$professor_info.nome",
                 "Termino": {
                     "$dateAdd": {
@@ -76,23 +101,26 @@ def get_homes():
                 "Aula": 1,
                 "Inicio": 1,
                 "Termino": 1,
-                "Turma": 1,
+                "Semestre": 1,      # Semestre da turma
+                "Curso": 1,      # Nome do curso
                 "Professor": 1
             }
         }
     ]
-    
+
     result = list(mongo.db.Aula.aggregate(pipeline))
 
+    # Convertendo os horários para string
     for i in result:
         if isinstance(i.get("Inicio"), datetime):
             i["Inicio"] = i["Inicio"].strftime("%H:%M:%S")
         if isinstance(i.get("Termino"), datetime):
             i["Termino"] = i["Termino"].strftime("%H:%M:%S")
-    
+
     response = []
-    
+
     for i in result:
         response.append(jsonify_plain(i))
-    
+
     return jsonify(response), 200
+
