@@ -17,8 +17,11 @@
       </div>
 
       <div class="mb-3">
-        <label class="form-label">Código do Curso</label>
-        <input type="number" class="form-control" id="courseInput" name="courseInput" formControlName="cod_curso">
+        <label class="form-label">Curso</label>
+        <select class="form-select" formControlName="cod_curso">
+          <option disabled value="" selected>Escolha:</option>
+          <option *ngFor="let course of courses" [value]="course.cod_curso">{{ course.nome }}</option>
+        </select>
       </div>
 
       <button type="submit" class="btn btn-primary" (click)="saveClass()">Salvar</button>

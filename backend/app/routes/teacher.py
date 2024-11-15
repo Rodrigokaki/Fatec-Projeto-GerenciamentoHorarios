@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from app.db import mongo
-from ..helpers import jsonify_plain, convert_to_datetime
+from ..helpers import jsonify_plain, convert_to_datatime_YMD
 from bson import ObjectId
 from bson.errors import InvalidId as bsonInvalidId
 import traceback
@@ -37,7 +37,7 @@ def add_teacher():
             'nome': data.get('nome'),
             'cpf': data.get('cpf'),
             'email_institucional': data.get('email_institucional'),
-            'data_admissao': convert_to_datetime(data.get('data_admissao')),
+            'data_admissao': convert_to_datatime_YMD(data.get('data_admissao')),
         }
     except bsonInvalidId as invalidId:
         return jsonify({'message': 'ID inválido', 'error': traceback.format_exception_only(invalidId)}), 400
@@ -68,7 +68,7 @@ def update_teacher(id):
             'nome': data.get('nome'),
             'cpf': data.get('cpf'),
             'email_institucional': data.get('email_institucional'),
-            'data_admissao': convert_to_datetime(data.get('data_admissao')),
+            'data_admissao': convert_to_datatime_YMD(data.get('data_admissao')),
         }
     except bsonInvalidId as invalidId:
         return jsonify({'message': 'ID inválido', 'error': traceback.format_exception_only(invalidId)}), 400

@@ -2,13 +2,19 @@
   <h1>Cadastrar Aula</h1>
   <form class="mt-5" [formGroup]="formGroupLesson">
       <div class="mb-3">
-        <label class="form-label">Código da disciplina</label>
-        <input type="number" class="form-control" id="subjectInput" name="subjectInput" formControlName="cod_disciplina">
+        <label class="form-label">Disciplina</label>
+        <select class="form-select" formControlName="cod_disciplina">
+          <option disabled value="" selected>Escolha:</option>
+          <option *ngFor="let subject of subjects" [value]="subject.cod_disciplina">{{ subject.nome }}</option>
+        </select>
       </div>
 
       <div class="mb-3">
         <label class="form-label">Código da turma</label>
-        <input type="number" class="form-control" id="classInput" name="cod_turma" formControlName="cod_turma">
+        <select class="form-select" formControlName="cod_turma">
+          <option disabled value="" selected>Escolha:</option>
+          <option *ngFor="let iclass of classesWithName" [value]="iclass.cod_turma">{{ iclass.nome_curso }} - {{ iclass.semestre }}° Semestre {{ iclass.periodo }}</option>
+        </select>
       </div>
 
       <div class="mb-3">

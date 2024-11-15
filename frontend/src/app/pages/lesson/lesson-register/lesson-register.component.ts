@@ -3,6 +3,11 @@ import { ILesson } from '../../../models/ILesson';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { LessonService } from '../../../services/lesson.service';
 import { ActivatedRoute, Route, Router } from '@angular/router';
+import { ISubject } from '../../../models/ISubject';
+import { SubjectService } from '../../../services/subject.service';
+import { IClass } from '../../../models/IClass';
+import { ClassService } from '../../../services/class.service';
+import { IClassName } from '../../../models/IClassName';
 
 @Component({
   selector: 'app-lesson-register',
@@ -14,8 +19,12 @@ export class LessonRegisterComponent implements OnInit {
 
   lesson?: ILesson | null;
   formGroupLesson: FormGroup
+  subjects: ISubject[] = [];
+  classes: IClass[] = [];
+  classesWithName: IClassName[] = [];
 
-  constructor(private formBuilder: FormBuilder, private lessonService: LessonService) {
+  constructor(private formBuilder: FormBuilder, private lessonService: LessonService, private subjectService: SubjectService, 
+    private classService: ClassService) {
     this.formGroupLesson = formBuilder.group({
       cod_aula: [''],
       horario: [''],
@@ -27,6 +36,14 @@ export class LessonRegisterComponent implements OnInit {
 
   ngOnInit(): void {
       this.isEditing = false;
+
+      this.subjectService.getSubjects().subscribe(data => {
+        this.subjects = data;
+      })
+
+      this.classService.getClassesWithName().subscribe(data => {
+        this.classesWithName = data;
+      })
 
       this.lesson = this.lessonService.getSharedLesson();
 

@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { IStudent } from '../../../models/IStudent';
 import { StudentService } from '../../../services/student.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { IClassName } from '../../../models/IClassName';
+import { ClassService } from '../../../services/class.service';
 
 @Component({
   selector: 'app-student-register',
@@ -12,9 +14,10 @@ export class StudentRegisterComponent {
   isEditing!: boolean;
 
   student?: IStudent | null;
-  formGroupStudent: FormGroup
+  formGroupStudent: FormGroup;
+  classes: IClassName[] = [];
 
-  constructor(private formBuilder: FormBuilder, private studentService: StudentService) {
+  constructor(private formBuilder: FormBuilder, private studentService: StudentService, private classService: ClassService) {
     this.formGroupStudent = formBuilder.group({
       cod_aluno: [''],
       cod_turma: [''],
@@ -28,6 +31,10 @@ export class StudentRegisterComponent {
       this.isEditing = false;
 
       this.student = this.studentService.getSharedStudent();
+
+      this.classService.getClassesWithName().subscribe(data => {
+        this.classes = data;
+      })
 
       if (Object.keys(this.student).length > 0) {
         this.formGroupStudent.patchValue({
