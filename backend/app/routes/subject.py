@@ -35,7 +35,7 @@ def add_subject():
     try:
         new_subject = {
             'nome': data.get('nome'),
-            'cod_prof': ObjectId(data.get('cod_professor')),
+            'cod_prof': ObjectId(data.get('cod_prof')),
             'cod_curso': ObjectId(data.get('cod_curso'))
         }
     except bsonInvalidId as invalidId:
@@ -65,7 +65,7 @@ def update_subject(id):
     try:
         updated_subject = {
             'nome': data.get('nome'),
-            'cod_professor': ObjectId(data.get('cod_professor')),
+            'cod_professor': ObjectId(data.get('cod_prof')),
             'cod_curso': ObjectId(data.get('cod_curso'))
         }
     except bsonInvalidId as invalidId:
