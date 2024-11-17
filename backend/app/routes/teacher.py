@@ -6,7 +6,7 @@ from bson.errors import InvalidId as bsonInvalidId
 import traceback
 
 bp = Blueprint('teachers', __name__, url_prefix='/teachers')
-PRIMARY_ID_KEY = 'cod_professor'
+PRIMARY_ID_KEY = 'cod_prof'
 
 @bp.route('/', methods=['GET'])
 def get_teachers():

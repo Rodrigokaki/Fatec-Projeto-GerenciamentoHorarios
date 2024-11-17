@@ -10,7 +10,7 @@
         <label class="form-label">Professor</label>
         <select class="form-select" formControlName="cod_prof">
           <option disabled value="" selected>Escolha:</option>
-          <option *ngFor="let teacher of teachers" [value]="teacher.cod_prof">{{ teacher.nome }} {{ teacher.cod_prof }}</option>
+          <option *ngFor="let teacher of teachers" [value]="teacher.cod_prof">{{ teacher.nome }}</option>
         </select>
       </div>
 
